@@ -11,12 +11,15 @@ import { Dimensions } from "react-native";
 const Home = (props) => {
   
   const [selected, setSelected] = React.useState("");
+
   
   const data = [{key:'1',value:'RMX-00001'},
   {key:'2',value:'RMX-00002'},
   {key:'3',value:'RMX-00003'},
   {key:'4',value:'RMX-00004'},
   {key:'5',value:'RMX-00005'}];
+
+
 
   const { width, height } = Dimensions.get("window");
   return (
@@ -65,7 +68,7 @@ const Home = (props) => {
               color: "#FFF",
               fontWeight: "bold",
               //marginTop: 80,
-            }}>Hi Muhammad Humayun Khalid</Text>
+            }}>{props.route.params.id.Device_no}</Text>
 
           </View>
         </View>
@@ -102,7 +105,7 @@ const Home = (props) => {
             marginLeft:70,
             marginTop:-40
           }}>
-            5 KG
+            {props.route.params.id.weight} KG
           </Text>
           </View>
           <View style={{
@@ -122,7 +125,7 @@ const Home = (props) => {
             marginLeft:70,
             marginTop:-40
           }}>
-            80%
+            {props.route.params.id.battery}%
           </Text>
           </View>
         </View>
@@ -144,7 +147,7 @@ const Home = (props) => {
             marginLeft:70,
             marginTop:-45
           }}>
-            Excellent Status
+            {props.route.params.id.status} Status
           </Text>
         </View>
       </View>

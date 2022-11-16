@@ -4,7 +4,6 @@ import {
   Image,
   StyleSheet,
   useWindowDimensions,
-  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import Logo from "../../assets/images/logo_1.png";
@@ -15,36 +14,41 @@ import ForgotPassword from "./ForgotPassword";
 import { Dimensions } from "react-native";
 import TermsConditions from "./TermsConditions";
 import PrivacyPolicy from "./PrivacyPolicy";
-import { db } from "../fire";
-import { collection, getDocs } from "firebase/firestore";
 import { useEffect } from "react";
+import { db } from "../firebase-config";
+import { ref, onValue, endAt } from "firebase/database";
 
 const SignIn = (props) => {
-  const [Gas, setgas] = useState([]);
-
-  const GasCollection = collection(db, "Gas");
-  const [DeviceName, setDeviceName] = useState("");
+  const [Device_no, SetDeviceno] = useState("");
   // const [ deviceno, setDeviceno] = useState('');
-  const [Password, setPassword] = useState("");
+  const [password, setPassword] = useState("");
   const { height } = useWindowDimensions();
+  const [gas, setGas] = useState([]);
 
   useEffect(() => {
-    const getGas = async () => {
-      const data = await getDocs(GasCollection);
-      setgas(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-    getGas();
+    return onValue(ref(db, `/`), (querySnapShot) => {
+      let data = querySnapShot.val();
+      setGas(data);
+      // console.log(gasRef);
+      // console.log(gasRef);
+    });
   }, []);
 
   const onSignInPressed = () => {
-    if (setDeviceName === Gas.DeviceName && setPassword === Gas.password) {
-      // props.navigation.navigate(Home);
-      alert("successful");
-    } else {
-      alert("Unsuccessful");
+    var flag = false;
+    let gasRef = Object.keys(gas);
+    gasRef.forEach((key) => {
+      if (Device_no == gas[key].Device_no && password == gas[key].password) {
+        flag = true;
+        props.navigation.navigate("Home", {
+          id: gas[key],
+        });
+        // alert("success");
+      }
+    });
+    if (flag == false) {
+      alert("Invalid login credentials");
     }
-    // setDeviceName("");
-    // setPassword("");
   };
 
   const onForgotPasswordPressed = () => {
@@ -82,15 +86,11 @@ const SignIn = (props) => {
           style={[styles.logo, { height: height * 0.3 }]}
           resizeMode="contain"
         />
-        {/* {gas.map((gas) =>  {
-  <Text>{gas.DeviceName}</Text>
 
-
-})}; */}
         <CustomInput
           placeholder="Enter Your Model Number"
-          value={DeviceName}
-          setvalue={setDeviceName}
+          value={Device_no}
+          setvalue={SetDeviceno}
         />
         {/* <CustomInput
        placeholder="Enter Your Device Number" 
@@ -99,7 +99,7 @@ const SignIn = (props) => {
        /> */}
         <CustomInput
           placeholder="Enter Your Password"
-          value={Password}
+          value={password}
           setvalue={setPassword}
         />
 
