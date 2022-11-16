@@ -36,16 +36,20 @@ const SignIn = (props) => {
 
   const onSignInPressed = () => {
     var flag = false;
+    var device = false;
+    var pass = false;
     let gasRef = Object.keys(gas);
     gasRef.forEach((key) => {
       if (Device_no == gas[key].Device_no && password == gas[key].password) {
         flag = true;
+        device = false;
         props.navigation.navigate("Home", {
           id: gas[key],
         });
         // alert("success");
       }
     });
+
     if (flag == false) {
       alert("Invalid login credentials");
     }
@@ -101,6 +105,7 @@ const SignIn = (props) => {
           placeholder="Enter Your Password"
           value={password}
           setvalue={setPassword}
+          secureTextEntry={true}
         />
 
         <Text>
