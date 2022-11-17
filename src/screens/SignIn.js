@@ -17,6 +17,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import { useEffect } from "react";
 import { db } from "../firebase-config";
 import { ref, onValue, endAt } from "firebase/database";
+import Pushnotification from "../Push-notification";
 
 const SignIn = (props) => {
   const [Device_no, SetDeviceno] = useState("");
@@ -77,6 +78,7 @@ const SignIn = (props) => {
         flex: 1,
       }}
     >
+      <Pushnotification />
       <View
         style={{
           backgroundColor: "#FFF",
